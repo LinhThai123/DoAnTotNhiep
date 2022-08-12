@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Quản trị Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" th:href="@{/admin/css/main.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+</head>
+
+<body class="app sidebar-mini rtl">
+<header class="app-header">
+    <a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
+       aria-label="Hide Sidebar"></a>
+    <ul class="app-nav">
+        <li>
+            <a class="app-nav__item" href="/index.html"><i class="bx bx-log-out bx-rotate-180"></i>
+            </a>
+        </li>
+    </ul>
+</header>
+<!-- Sidebar menu-->
+<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+<aside class="app-sidebar">
+    <div class="app-sidebar__user">
+        <img class="app-sidebar__user-avatar" th:src="@{/admin/images/em.jpg}" width="50px" height="80px"
+             alt="User Image"/>
+        <div>
+            <p class="app-sidebar__user-name"><b>Admin</b></p>
+            <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+        </div>
+    </div>
+    <hr/>
+    <ul class="app-menu">
+        <li>
+            <a class="app-menu__item" href="table-data-table.html"><i class="app-menu__icon bx bx-id-card"></i>
+                <span class="app-menu__label">Quản Lý Nhân Viên</span></a>
+        </li>
+        <li>
+            <a class="app-menu__item" th:href="@{/admin/users/}"><i class="app-menu__icon bx bx-user-voice"></i>
+                <span class="app-menu__label">Quản Lý Khách Hàng</span></a>
+        </li>
+        <li>
+            <a class="app-menu__item" th:href="@{/admin/products}">
+                <i class="app-menu__icon bx bx-purchase-tag-alt"></i>
+                <span class="app-menu__label">Quản Lý Sản Phẩm</span></a>
+        </li>
+<!--        <li>-->
+<!--            <a class="app-menu__item" href="table-data-oder.html"><i class="app-menu__icon bx bx-task"></i><span-->
+<!--                    class="app-menu__label">Quản Lý Đơn Hàng</span></a>-->
+<!--        </li>-->
+        <li>
+            <a class="app-menu__item " th:href="@{/admin/categories}"><i
+                    class="app-menu__icon bx bx-task"></i><span
+                    class="app-menu__label">Quản Lý Danh Mục </span></a>
+        </li>
+        <li>
+            <a class="app-menu__item active" th:href="@{/admin/posts}"><i
+                    class="app-menu__icon bx bx-task"></i><span
+                    class="app-menu__label">Quản Lý Bài Viết </span></a>
+        </li>
+        <li>
+            <a class="app-menu__item " th:href="@{/admin/contact}"><i
+                    class="app-menu__icon bx bx-task"></i><span
+                    class="app-menu__label">Quản Lý Liên Hệ </span></a>
+        </li>
+
+    </ul>
+</aside>
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active">
+                <a href="#"><b>Danh sách bài viết</b></a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" th:href="@{/admin/posts/saveOrEdit}" title="Thêm"><i
+                                    class="fas fa-plus"></i> Tạo mới bài viết </a>
+                        </div>
+                    </div>
+                    <div th:if="${message != null}" class="alert alert-primary" role="alert">
+                        <i th:text="${message}"></i>
+                    </div>
+                    <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class=" col-12 col-sm-6 col-md-6">
+                                <form action="">
+                                    <div class="dataTables_length">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6">
+                                <form th:action="@{/admin/posts/search}" method="get">
+                                    <div id="keyword" class="dataTables_filter">
+                                        <label>
+                                            <input type="text" name="keyword" class="form-control form-control-sm"
+                                                   aria-controls="sampleTable"/>
+                                            <button class="btn btn-save" type="submit">Tìm Kiếm</button>
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Tiêu Đề</th>
+                            <th>Trạng Thái</th>
+                            <!--                            <th>Ngày Tạo </th>-->
+                            <th>Ảnh</th>
+                            <th>Ngày Xuất Bản</th>
+                            <th>Chức Năng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="post, iStat : ${postList}">
+                            <td th:text="${iStat.index} + 1"></td>
+                            <td th:text="${post.title}"></td>
+                            <td>
+                                <th:block
+                                        th:each="status : ${T(vn.techmaster.doan_woodshop.entity.BlogStatus).values()}">
+                                            <span class="badge"
+                                                  th:class="${#strings.equals(post.status,'Public')} ? 'badge bg-success':'badge bg-danger'"
+                                                  th:if="${status == post.status}" th:text="${status}">
+                                            </span>
+                                </th:block>
+                            </td>
+                            <!--                            <td th:text="${post.createdAt}"></td>-->
+                            <td>
+                                <img th:src="@{${post.getPostImagePath}}" alt="image error" width="100px;">
+                            </td>
+                            <td th:text="${post.publishedAt}"></td>
+                            <td>
+                                <a th:href="@{'/admin/posts/view/' + ${post.id}}"
+                                   class="btn btn-outline-info btn-sm" type="button" title="Chi tiết">
+                                    <i class="fas fa-info"></i>
+                                </a>
+                                <a th:href="@{'/admin/posts/edit/' + ${post.id}}"
+                                   class="btn btn-outline-warning btn-sm" type="button" title="Chỉnh sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a th:href="@{'/admin/posts/delete/' + ${post.id}}"
+                                   class="btn btn-outline-danger btn-sm" type="button" title="Xóa">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination justify-content-center d-flex">
+                    <a style="color: #001c40" th:if="${currentPage>1}"
+                       th:href="@{'/admin/posts/1'+'?keyword='+${keyword}}">First</a>
+                    <span style="color: #001c40" th:unless="${currentPage>1}">First</span>
+                    <span class="page-numbers" th:each="i: ${#numbers.sequence(1,totalPages)}">
+                        <a style="color: #001c40" th:if="${i != currentPage}" th:text="${i}"
+                           th:href="@{'/admin/posts/' + ${i}  +'?keyword='+${keyword}}"></a>
+                        <span th:unless="${i != currentPage}" th:text="${i}"></span>
+                    </span>
+                    <a style="color: #001c40" th:if="${currentPage < totalPages}"
+                       th:href="@{'/admin/posts/' + ${totalPages}  + '?keyword=' +${keyword}}">Last</a>
+                    <span style="color: #001c40" th:unless="${currentPage < totalPages}">Last</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Essential javascripts for application to work-->
+
+<script th:src="@{/admin/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/admin/js/popper.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/admin/js/main.js}"></script>
+
+<script th:src="@{/admin/js/plugins/pace.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<!--  <script type="text/javascript" th:src="@{/js/plugins/jquery.dataTables.min.js}"></script>-->
+<script type="text/javascript" th:src="@{/admin/js/plugins/dataTables.bootstrap.min.js}"></script>
+</body>
+
+</html>

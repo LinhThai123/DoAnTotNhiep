@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title>Danh Sách Users | Quản trị Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" th:href="@{/admin/css/main.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+</head>
+
+<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl">
+<!-- Navbar-->
+<header class="app-header">
+    <!-- Sidebar toggle button-->
+    <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+    <!-- Navbar Right Menu-->
+    <ul class="app-nav">
+        <!-- User Menu-->
+        <li><a class="app-nav__item" href="/index.html"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+
+        </li>
+    </ul>
+</header>
+<!-- Sidebar menu-->
+<aside class="app-sidebar">
+    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" th:src="@{/admin/images/em.jpg}" width="50px"
+                                        alt="User Image">
+        <div>
+            <p class="app-sidebar__user-name"><b>Admin</b></p>
+            <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+        </div>
+    </div>
+    <hr>
+    <ul class="app-menu">
+        <li>
+            <a class="app-menu__item" href="table-data-table.html"><i class="app-menu__icon bx bx-id-card"></i>
+                <span class="app-menu__label">Quản Lý Nhân Viên</span></a>
+        </li>
+        <li>
+            <a class="app-menu__item active" th:href="@{/admin/users/}"><i class="app-menu__icon bx bx-user-voice"></i>
+                <span class="app-menu__label">Quản Lý Khách Hàng</span></a>
+        </li>
+        <li>
+            <a class="app-menu__item" th:href="@{/admin/products}">
+                <i class="app-menu__icon bx bx-purchase-tag-alt"></i>
+                <span class="app-menu__label">Quản Lý Sản Phẩm</span></a>
+        </li>
+<!--        <li>-->
+<!--            <a class="app-menu__item" href="table-data-oder.html"><i class="app-menu__icon bx bx-task"></i><span-->
+<!--                    class="app-menu__label">Quản Lý Đơn Hàng</span></a>-->
+<!--        </li>-->
+        <li>
+            <a class="app-menu__item " th:href="@{/admin/categories}"><i
+                    class="app-menu__icon bx bx-task"></i><span
+                    class="app-menu__label">Quản Lý Danh Mục </span></a>
+        </li>
+        <li>
+            <a class="app-menu__item " th:href="@{/admin/posts}"><i
+                    class="app-menu__icon bx bx-task"></i><span
+                    class="app-menu__label">Quản Lý Bài Viết </span></a>
+        </li>
+        <li>
+            <a class="app-menu__item " th:href="@{/admin/contact}"><i
+                    class="app-menu__icon bx bx-task"></i><span
+                    class="app-menu__label">Quản Lý Liên Hệ </span></a>
+        </li>
+
+    </ul>
+</aside>
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản Lý Khách Hàng</li>
+            <li class="breadcrumb-item"><a href="#">Tạo mới</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">
+                    <a href="#">
+                        <span th:if="${user.enabled}">Cập Nhật Khách Hàng</span>
+                        <span th:unless="${user.enabled}">Thêm Mới Khách Hàng</span>
+                    </a>
+                </h3>
+                <div class="tile-body">
+                    <form method="post" th:action="@{/admin/users/save}" enctype="multipart/form-data"
+                          th:object="${user}">
+                        <div class="row">
+<!--                            <input class="form-control" type="hidden" th:field="*{id}">-->
+                            <input class="form-control" type="hidden" th:field="*{enabled}">
+                            <div class="form-group col-md-4">
+                                <label class="control-label">Tên Khách Hàng</label>
+                                <input class="form-control" type="text" th:field="*{name}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name
+                                    Error
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label">Email</label>
+                                <input class="form-control" type="text" th:field="*{email}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('email')}"
+                                     th:errors="*{email}">Email Error
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label">Password</label>
+                                <input class="form-control" type="text" th:field="*{password}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                                    password Error
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label class="control-label">Ảnh</label>
+                                <input class="form-control" type="file" name="imageMultipartFile" id="image">
+                                <div class="text-danger" th:if="${#fields.hasErrors('photos')}" th:errors="*{photos}">
+                                    Image Error
+                                </div>
+                            </div>
+                            <input class="form-control" type="hidden" th:field="*{photos}">
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <button class="btn btn-save" type="submit">
+                                    <span th:if="${user.enabled}">Cập Nhật </span>
+                                    <span th:unless="${user.enabled}">Thêm Mới </span>
+                                </button>
+                                <a class="btn btn-cancel" th:href="@{/admin/users}">Hủy bỏ</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:src="@{/admin/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/admin/js/main.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('#image').change(function () {
+            showImageThumbnail(this);
+        })
+    })
+
+    function showImageThumbnail(fileInput) {
+        file = fileInput.files[0];
+        reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#thumbnail').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+</script>
+</body>
+
+</html>

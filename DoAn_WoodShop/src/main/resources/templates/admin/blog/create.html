@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title>Danh sách danh mục đơn hàng | Quản trị Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" th:href="@{/admin/css/main.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+<!--  markdown-->
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+</head>
+
+<body class="app sidebar-mini rtl">
+<!-- Navbar-->
+<header class="app-header">
+    <!-- Sidebar toggle button-->
+    <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+    <!-- Navbar Right Menu-->
+    <ul class="app-nav">
+        <!-- User Menu-->
+        <li><a class="app-nav__item" href="/index.html"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+
+        </li>
+    </ul>
+</header>
+<!-- Sidebar menu-->
+<aside class="app-sidebar">
+    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" th:src="@{/admin/images/em.jpg}" width="50px"
+                                        alt="User Image">
+        <div>
+            <p class="app-sidebar__user-name"><b>Admin</b></p>
+            <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+        </div>
+    </div>
+    <hr>
+    <ul class="app-menu">
+        <li>
+            <a class="app-menu__item" href="table-data-table.html"><i class="app-menu__icon bx bx-id-card"></i>
+                <span class="app-menu__label">Quản Lý Nhân Viên</span></a>
+        </li>
+        <li>
+            <a class="app-menu__item" th:href="@{/admin/users/}"><i class="app-menu__icon bx bx-user-voice"></i>
+                <span class="app-menu__label">Quản Lý Khách Hàng</span></a>
+        </li>
+        <li>
+            <a class="app-menu__item" th:href="@{/admin/products}">
+                <i class="app-menu__icon bx bx-purchase-tag-alt"></i>
+                <span class="app-menu__label">Quản Lý Sản Phẩm</span></a>
+        </li>
+<!--        <li>-->
+<!--            <a class="app-menu__item" href="table-data-oder.html"><i class="app-menu__icon bx bx-task"></i><span-->
+<!--                    class="app-menu__label">Quản Lý Đơn Hàng</span></a>-->
+<!--        </li>-->
+        <li>
+            <a class="app-menu__item " th:href="@{/admin/categories}"><i
+                    class="app-menu__icon bx bx-task"></i><span
+                    class="app-menu__label">Quản Lý Danh Mục </span></a>
+        </li>
+        <li>
+            <a class="app-menu__item active" th:href="@{/admin/posts}"><i
+                    class="app-menu__icon bx bx-task"></i><span
+                    class="app-menu__label">Quản Lý Bài Viết </span></a>
+        </li>
+        <li>
+            <a class="app-menu__item " th:href="@{/admin/contact}"><i
+                    class="app-menu__icon bx bx-task"></i><span
+                    class="app-menu__label">Quản Lý Liên Hệ </span></a>
+        </li>
+
+    </ul>
+</aside>
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản Lý Blog</li>
+            <li class="breadcrumb-item"><a href="#">Tạo mới</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">
+                    <a href="#">
+                        <span th:if="${post.isCheck}"> Cập Nhật Bài Viết</span>
+                        <span th:unless="${post.isCheck}">Viết Bài</span>
+                    </a>
+                </h3>
+                <div class="tile-body">
+                    <form method="post" th:action="@{/admin/posts/save}" name="post" th:object="${post}" enctype="multipart/form-data">
+                        <input type="hidden" th:field="*{id}">
+                        <input class="form-control" type="hidden" th:field="*{isCheck}">
+                        <div class="row">
+                            <div class="form-group col-md-9">
+                                <label class="control-label">Tiêu Đề</label>
+                                <input class="form-control" type="text" th:field="*{title}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="status" class="control-label">Tình trạng</label>
+                                <select class="form-control" id="status" th:field="*{status}">
+                                    <option
+                                            th:each="status : ${T(vn.techmaster.doan_woodshop.entity.BlogStatus).values()}"
+                                            th:value="${status}" th:text="${status}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="control-label" for="content">Nội Dung</label>
+                                <textarea type="text" class="form-control form-palace-holder" cols="50" rows="20" id="content" placeholder="Content" th:field="*{content}" ></textarea>
+                                <div class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</div><br><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="control-label">Mô Tả </label>
+                                <textarea class="form-control" type="text" th:field="*{description}"
+                                          cols="10" rows="5"> </textarea>
+                                <div class="text-danger" th:if="${#fields.hasErrors('description')}"
+                                     th:errors="*{description}">Description Error
+                                </div>
+                            </div>
+                        </div>
+                         <div class="row">
+                                 <div class="form-group col-md-6">
+                                     <label class="control-label">Ảnh</label>
+                                     <input class="form-control" type="file" name="imageMultipartFile" id="image" accept="image/**">
+                                     <div class="text-danger" th:if="${#fields.hasErrors('thumbnail')}" th:errors="*{thumbnail}">
+                                         Image Error
+                                     </div>
+                                 </div>
+                                 <input class="form-control" type="hidden" th:field="*{thumbnail}">
+                                 <div id="thumbbox" style="margin-top: 40px ; margin-left: 15px ; ">
+                                     <img th:src="@{${post.thumbnail == null ? '/admin/images/noimage.jpg' : '/post-photos/' + post.thumbnail}}"
+                                          height="200" width="250" alt="Image Preview" id="thumbnail"/>
+                                 </div>
+                             </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <button class="btn btn-save" type="submit">
+                                    <span th:if="${post.isCheck}">Cập Nhật </span>
+                                    <span th:unless="${post.isCheck}"> Thêm Mới </span>
+                                </button>
+                                <a class="btn btn-cancel" th:href="@{/admin/posts}">Hủy bỏ</a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/admin/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/admin/js/main.js}"></script>
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('#image').change(function () {
+            showImageThumbnail(this);
+        })
+    })
+
+    function showImageThumbnail(fileInput) {
+        var file = fileInput.files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $("#thumbnail").attr("src", e.target.result);
+        };
+
+        reader.readAsDataURL(file);
+    }
+</script>
+<script th:inline="javascript">
+    const content = new EasyMDE({element: document.getElementById('content')});
+</script>
+</body>
+</html>
